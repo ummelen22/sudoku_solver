@@ -47,11 +47,29 @@ def test_is_valid():
         is_valid(sudoku, unfilled_location[0], unfilled_location[1], valid_option) is True
     ), "Providing an unfilled element of the sudoku with a valid option, the validation method should return True"
 
-    # When I ask for an unfilled element with an invalid option
+    # When I ask for an unfilled element with an invalid option because the number exists in the row
     unfilled_location = [1, 1]
-    invalid_option = 1
+    invalid_row_option = 2
 
-    # Then the validation method should return True
+    # Then the validation method should return False
     assert (
-        is_valid(sudoku, unfilled_location[0], unfilled_location[1], invalid_option) is False
-    ), "Providing an unfilled element of the sudoku with an invalid option, the validation method should return False"
+        is_valid(sudoku, unfilled_location[0], unfilled_location[1], invalid_row_option) is False
+    ), "Providing an unfilled element of the sudoku with an invalid row option, the validation method should return False"
+
+    # When I ask for an unfilled element with an invalid option because the number exists in the column
+    unfilled_location = [3, 0]
+    invalid_column_option = 3
+
+    # Then the validation method should return False
+    assert (
+        is_valid(sudoku, unfilled_location[0], unfilled_location[1], invalid_column_option) is False
+    ), "Providing an unfilled element of the sudoku with an invalid column option, the validation method should return False"
+
+    # When I ask for an unfilled element with an invalid option because the number exists in the box
+    unfilled_location = [0, 3]
+    invalid_box_option = 2
+
+    # Then the validation method should return False
+    assert (
+        is_valid(sudoku, unfilled_location[0], unfilled_location[1], invalid_box_option) is False
+    ), "Providing an unfilled element of the sudoku with an invalid box option, the validation method should return False"
