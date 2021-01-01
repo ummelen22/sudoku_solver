@@ -1,16 +1,28 @@
-from sudoku_solver.src.solve_sudoku import is_valid
+from sudoku_solver.src.solve_sudoku import is_valid, _solve_sudoku
 
 
 SUDOKU = [
-    [1, 0, 0, 0, 0, 0, 0, 0, 6],
-    [0, 0, 6, 0, 2, 0, 7, 0, 0],
-    [7, 8, 9, 4, 5, 0, 1, 0, 3],
-    [0, 0, 0, 8, 0, 7, 0, 0, 4],
-    [0, 0, 0, 0, 3, 0, 0, 0, 0],
-    [0, 9, 0, 0, 0, 4, 2, 0, 1],
-    [3, 1, 2, 9, 7, 0, 0, 4, 0],
-    [0, 4, 0, 0, 1, 2, 0, 7, 8],
-    [9, 0, 8, 0, 0, 0, 0, 0, 0],
+    [1, 0, 0, 0, 0, 0, 0, 0, 6],  # .         y
+    [0, 0, 6, 0, 2, 0, 7, 0, 0],  # .------------------>
+    [7, 8, 9, 4, 5, 0, 1, 0, 3],  # |
+    [0, 0, 0, 8, 0, 7, 0, 0, 4],  # |
+    [0, 0, 0, 0, 3, 0, 0, 0, 0],  # |
+    [0, 9, 0, 0, 0, 4, 2, 0, 1],  # x|
+    [3, 1, 2, 9, 7, 0, 0, 4, 0],  # |
+    [0, 4, 0, 0, 1, 2, 0, 7, 8],  # |
+    [9, 0, 8, 0, 0, 0, 0, 0, 0],  # V
+]
+
+SOLUTION = [
+    [1, 2, 3, 7, 8, 9, 4, 5, 6],
+    [4, 5, 6, 1, 2, 3, 7, 8, 9],
+    [7, 8, 9, 4, 5, 6, 1, 2, 3],
+    [2, 3, 1, 8, 9, 7, 5, 6, 4],
+    [5, 6, 4, 2, 3, 1, 8, 9, 7],
+    [8, 9, 7, 5, 6, 4, 2, 3, 1],
+    [3, 1, 2, 9, 7, 8, 6, 4, 5],
+    [6, 4, 5, 3, 1, 2, 9, 7, 8],
+    [9, 7, 8, 6, 4, 5, 3, 1, 2],
 ]
 
 
@@ -73,3 +85,9 @@ def test_is_valid():
     assert (
         is_valid(sudoku, unfilled_location[0], unfilled_location[1], invalid_box_option) is False
     ), "Providing an unfilled element of the sudoku with an invalid box option, the validation method should return False"
+
+
+def test_sudoku_solver():
+    """ Tests whether the solver correctly solves a sudoku """
+    _solve_sudoku(sudoku=SUDOKU)
+    assert SUDOKU == SOLUTION
