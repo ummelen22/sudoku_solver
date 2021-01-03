@@ -51,15 +51,17 @@ def is_valid(sudoku, x, y, number):
 
 
 def find_empty_cell(grid):
+    """ Returns the first empty cell it finds in a 2D grid """
     for x in range(len(grid)):
         for y in range(len(grid[0])):
             if grid[x][y] == 0:
-                return (x, y)
+                return x, y
 
     return None
 
 
 def _solve_sudoku(sudoku):
+    """ Solver for sudoku's """
     empty_cell = find_empty_cell(sudoku)
     if not empty_cell:
         return True
@@ -76,6 +78,7 @@ def _solve_sudoku(sudoku):
 
 
 def print_sudoku_human_readable(sudoku):
+    """ Prints the sudoku in a pretty fashion such that it is human readable """
     sudoku_readable = []
     horizontal = "+ - - - + - - - + - - - +"
     sudoku_readable.append(horizontal)
@@ -91,7 +94,6 @@ def print_sudoku_human_readable(sudoku):
 
 
 if __name__ == "__main__":
-    # sudoku = sys.argv[1:]
     print_sudoku_human_readable(SUDOKU)
     _solve_sudoku(SUDOKU)
     print("-"*50)
