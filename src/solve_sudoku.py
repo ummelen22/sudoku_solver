@@ -1,5 +1,20 @@
 """ Solver for sudoku puzzels """
 
+import random
+import time
+
+INIT_SUDOKU = [
+    [1, 0, 0, 0, 0, 0, 0, 0, 6],  # .         y
+    [0, 0, 6, 0, 2, 0, 7, 0, 0],  # .------------------>
+    [7, 8, 9, 4, 5, 0, 1, 0, 3],  # |
+    [0, 0, 0, 8, 0, 7, 0, 0, 4],  # |
+    [0, 0, 0, 0, 3, 0, 0, 0, 0],  # |
+    [0, 9, 0, 0, 0, 4, 2, 0, 1],  # x|
+    [3, 1, 2, 9, 7, 0, 0, 4, 0],  # |
+    [0, 4, 0, 0, 1, 2, 0, 7, 8],  # |
+    [9, 0, 8, 0, 0, 0, 0, 0, 0],  # V
+]
+
 SUDOKU = [
     [1, 0, 0, 0, 0, 0, 0, 0, 6],  # .         y
     [0, 0, 6, 0, 2, 0, 7, 0, 0],  # .------------------>
@@ -60,8 +75,41 @@ def find_empty_cell(grid):
     return None
 
 
+def _solve_sudoku_brute_force(sudoku):
+    """ Brute force solver for sudoku's """
+    while True:
+        no_valid_numbers = False
+        for x in range(len(sudoku)):
+            for y in range(len(sudoku[0])):
+                print(x, y)
+                if sudoku[x][y] == 0:
+                    valid_numbers = []
+
+                    for number in range(1, 10):
+                        if is_valid(sudoku, x, y, number):
+                            valid_numbers.append(number)
+
+                    if not valid_numbers:
+                        print_sudoku_human_readable(sudoku)
+                        sudoku = INIT_SUDOKU
+                        print_sudoku_human_readable(sudoku)
+                        input("continue?")
+                        no_valid_numbers = True
+                        break
+                    else:
+                        i = random.randint(0, len(valid_numbers) - 1)
+                        number = valid_numbers[i]
+                        sudoku[x][y] = number
+                else:
+                    continue
+            if no_valid_numbers:
+                break
+        if not find_empty_cell(sudoku):
+            return True
+
+
 def _solve_sudoku(sudoku):
-    """ Solver for sudoku's """
+    """ Backtracking solver for sudoku's """
     empty_cell = find_empty_cell(sudoku)
     if not empty_cell:
         return True
@@ -95,6 +143,9 @@ def print_sudoku_human_readable(sudoku):
 
 if __name__ == "__main__":
     print_sudoku_human_readable(SUDOKU)
-    _solve_sudoku(SUDOKU)
+    start_time = time.time()
+    _solve_sudoku_brute_force(SUDOKU)
+    end_time = time.time()
     print("-"*50)
     print_sudoku_human_readable(SUDOKU)
+    print(f"time spent: {end_time - start_time} sec")
